@@ -1,0 +1,6 @@
+{
+  "name": "منصة أتمتة وإدارة واتساب",
+  "description": "منصة شاملة لإدارة وأتمتة محادثات ومجموعات واتساب، الردود التلقائية، الإرسال المتسلسل، التعلم الذكي، والتحليل والتنسيق الأكاديمي.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
