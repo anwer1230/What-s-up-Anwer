@@ -15,7 +15,11 @@ import {
   Loader2,
   Database,
   MessageSquare,
-  Users
+  Users,
+  Zap,
+  Globe,
+  HelpCircle,
+  Key
 } from 'lucide-react';
 
 interface ConnectWhatsAppModalProps {
@@ -31,9 +35,9 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
   status = 'connected',
   onToggleStatus
 }) => {
-  const [activeTab, setActiveTab] = useState<'qr' | 'code' | 'guide'>('qr');
+  const [activeTab, setActiveTab] = useState<'qr' | 'sandbox' | 'guide'>('qr');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [generatedCode, setGeneratedCode] = useState('WA-8924-K93X');
+  const [generatedCode, setGeneratedCode] = useState('8924-K93X');
   const [copied, setCopied] = useState(false);
   const [qrRefreshing, setQrRefreshing] = useState(false);
 
@@ -96,7 +100,7 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
 
   const handleGenerateNewCode = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = 'WA-';
+    let code = '';
     for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
     code += '-';
     for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -178,41 +182,41 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-zinc-800/80 bg-zinc-950/50 px-6 pt-3 gap-2">
+        <div className="flex border-b border-zinc-800/80 bg-zinc-950/50 px-6 pt-3 gap-2 overflow-x-auto">
           <button
             onClick={() => setActiveTab('qr')}
-            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all shrink-0 cursor-pointer ${
               activeTab === 'qr'
                 ? 'bg-zinc-900 border-zinc-800 text-emerald-400 border-b-zinc-900'
                 : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <QrCode className="w-4 h-4" />
-            مسح رمز QR
+            <QrCode className="w-4 h-4 text-emerald-400" />
+            <span>مسح رمز QR (whatsapp-web.js)</span>
           </button>
 
           <button
-            onClick={() => setActiveTab('code')}
-            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all ${
-              activeTab === 'code'
+            onClick={() => setActiveTab('sandbox')}
+            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all shrink-0 cursor-pointer ${
+              activeTab === 'sandbox'
                 ? 'bg-zinc-900 border-zinc-800 text-emerald-400 border-b-zinc-900'
                 : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <Smartphone className="w-4 h-4" />
-            رمز الإقران برقم الهاتف
+            <Zap className="w-4 h-4 text-amber-400" />
+            <span>تفعيل المحاكاة (Sandbox)</span>
           </button>
 
           <button
             onClick={() => setActiveTab('guide')}
-            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 font-bold text-xs rounded-t-xl border-t border-x transition-all shrink-0 cursor-pointer ${
               activeTab === 'guide'
                 ? 'bg-zinc-900 border-zinc-800 text-emerald-400 border-b-zinc-900'
                 : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <ShieldCheck className="w-4 h-4" />
-            تعليمات الأمان ومنع الحظر
+            <ShieldCheck className="w-4 h-4 text-purple-400" />
+            <span>إرشادات التشغيل والأمان</span>
           </button>
         </div>
 
@@ -283,51 +287,50 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
         {/* Tab Contents */}
         <div className="p-6 space-y-5 max-h-[65vh] overflow-y-auto">
           
-          {/* TAB 1: QR CODE */}
+          {/* TAB 0: LIVE QR CODE SCAN */}
           {activeTab === 'qr' && (
             <div className="flex flex-col items-center text-center space-y-4">
-              <div className="p-4 bg-white rounded-2xl border-4 border-emerald-500/30 shadow-2xl relative group">
+              <div className="p-4 bg-white rounded-2xl border-4 border-emerald-500/40 shadow-2xl relative group">
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WhatsAppCompanionPairSession_${Date.now()}`}
-                  alt="WhatsApp QR Code"
-                  className={`w-48 h-48 transition-opacity ${qrRefreshing ? 'opacity-30' : 'opacity-100'}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=WhatsAppCompanionPairSession_${Date.now()}`}
+                  alt="WhatsApp Web QR Code"
+                  className={`w-52 h-52 transition-opacity ${qrRefreshing ? 'opacity-30' : 'opacity-100'}`}
                 />
                 <button
                   onClick={handleRefreshQr}
-                  className="absolute inset-0 m-auto w-10 h-10 bg-zinc-950/90 text-emerald-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg border border-emerald-500/40"
-                  title="تحديث الرمز"
+                  className="absolute inset-0 m-auto w-12 h-12 bg-zinc-950/90 text-emerald-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-xl border border-emerald-500/40 cursor-pointer"
+                  title="تحديث الرمز المباشر"
                 >
-                  <RefreshCw className={`w-5 h-5 ${qrRefreshing ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-6 h-6 ${qrRefreshing ? 'animate-spin' : ''}`} />
                 </button>
               </div>
 
-              <div className="max-w-md space-y-2 text-right bg-zinc-950 p-4 rounded-2xl border border-zinc-800/80">
+              <div className="max-w-md w-full space-y-3 text-right bg-zinc-950 p-4.5 rounded-2xl border border-zinc-800">
                 <h4 className="text-xs font-bold text-emerald-400 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  خطوات المسح السريع من جوالك:
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>خطوات المسح المباشر (مثل whatsapp-web.js):</span>
                 </h4>
-                <ol className="text-xs text-zinc-300 space-y-1.5 list-decimal list-inside leading-relaxed font-medium">
+                <ol className="text-xs text-zinc-300 space-y-2 list-decimal list-inside leading-relaxed font-medium">
                   <li>افتح تطبيق **واتساب** في جوالك الرئيسي.</li>
-                  <li>انتقل إلى **الإعدادات** (أو الثلاث نقاط بالأعلى) ← اختر **الأجهزة المرتبطة (Linked Devices)**.</li>
-                  <li>اضغط على **ربط جهاز (Link a Device)**.</li>
-                  <li>وجّه كاميرا الجوال نحو **رمز QR** أعلاه ليتم الاقتران فوراً.</li>
+                  <li>اختر **الأجهزة المرتبطة (Linked Devices)** ← **ربط جهاز (Link a Device)**.</li>
+                  <li>وجّه كاميرا الجوال لمسح **رمز QR** المعروض أعلاه.</li>
                 </ol>
 
-                <div className="pt-2 flex justify-center">
+                <div className="pt-2">
                   <button
                     onClick={() => onToggleStatus('connecting')}
                     disabled={status === 'connecting'}
-                    className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {status === 'connecting' ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>جاري المزامنة مع الجوال...</span>
+                        <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
+                        <span>جاري المزامنة مع الجوال عبر WebSocket...</span>
                       </>
                     ) : (
                       <>
                         <QrCode className="w-4 h-4" />
-                        <span>تأكيد مسح QR وبدء المزامنة الآن</span>
+                        <span>تأكيد مسح الرمز والربط بنجاح ⚡</span>
                       </>
                     )}
                   </button>
@@ -336,115 +339,65 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
             </div>
           )}
 
-          {/* TAB 2: PAIRING CODE */}
-          {activeTab === 'code' && (
-            <div className="space-y-4">
-              <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 space-y-3">
-                <label className="block text-xs font-bold text-zinc-300">
-                  أدخل رقم جوالك مع مفتاح الدولة (مثل 966500000000)
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="9665xxxxxxxx"
-                    className="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2 text-sm font-mono text-zinc-100 focus:outline-none focus:border-emerald-500"
-                  />
-                  <button
-                    onClick={handleGenerateNewCode}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all"
-                  >
-                    توليد الرمز
-                  </button>
+          {/* TAB 1: SANDBOX MODE */}
+          {activeTab === 'sandbox' && (
+            <div className="space-y-4 text-right">
+              <div className="bg-gradient-to-r from-emerald-950/60 via-zinc-950 to-emerald-950/60 p-5 rounded-2xl border border-emerald-500/40 space-y-3">
+                <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+                  <Zap className="w-5 h-5 text-amber-400 animate-pulse" />
+                  <span>تفعيل وضع المحاكاة والاختبار السريع (Sandbox Mode)</span>
                 </div>
-              </div>
+                <p className="text-xs text-zinc-300 leading-relaxed font-medium">
+                  أنت تعمل حالياً داخل بيئة سحابية تفاعلية. يوفر لك هذا الوضع قدرة كاملة على تجربة وتجريب **كافة خصائص المنصة** (بوت الرد الآلي بالذكاء الاصطناعي، الإرسال المتسلسل، أداة سحب المجموعات، ولوحة التحليلات) **دون الحاجة لربط هاتف شخصي حقيقي أو المخاطرة بحظره**.
+                </p>
 
-              <div className="bg-zinc-950 p-6 rounded-2xl border border-emerald-500/30 text-center space-y-3">
-                <span className="text-xs text-zinc-400 block font-semibold">رمز الإقران الخاص بجهازك:</span>
-                <div className="text-3xl font-mono font-black tracking-widest text-emerald-400 bg-zinc-900 py-3 rounded-xl border border-zinc-800 inline-block px-6">
-                  {generatedCode}
+                <div className="bg-zinc-900/90 p-3.5 rounded-xl border border-zinc-800 text-xs text-zinc-300 space-y-2">
+                  <div className="font-bold text-emerald-400">✨ مميزات وضع المحاكاة (Sandbox):</div>
+                  <ul className="list-disc list-inside space-y-1.5 text-zinc-300 pr-1 font-medium">
+                    <li>اختبار وتجربة جميع البوتات والردود والسكربتات فوراً دون الانتظار.</li>
+                    <li>اختبار محاكاة حملات الإرسال ببيانات واختبارات تفاعلية.</li>
+                    <li>حماية رقمك الشخصي من خطورة الحظر أثناء مرحلة التجربة والتكوين.</li>
+                  </ul>
                 </div>
-                <div>
-                  <button
-                    onClick={handleCopyCode}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold rounded-lg border border-zinc-700 transition-all"
-                  >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    {copied ? 'تم النسخ' : 'نسخ الرمز'}
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed space-y-2">
-                <p className="font-bold text-emerald-400">طريقة إدخال الرمز في واتساب:</p>
-                <p>1. افتح واتساب ← **الأجهزة المرتبطة** ← **ربط جهاز**.</p>
-                <p>2. اختر **الربط باستخدام رقم الهاتف بدلاً من ذلك** بالأسفل.</p>
-                <p>3. أدخل الرمز الظاهر أعلاه لتأكيد الربط.</p>
 
                 <div className="pt-2">
                   <button
-                    onClick={() => onToggleStatus('connecting', phoneNumber ? (phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`) : undefined)}
-                    disabled={status === 'connecting'}
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={() => onToggleStatus('connecting', '+966 50 000 0000')}
+                    className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs rounded-xl shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-emerald-400/30 active:scale-95"
                   >
-                    {status === 'connecting' ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>جاري المزامنة والربط...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Smartphone className="w-4 h-4" />
-                        <span>تأكيد إدخال الرمز وربط الرقم ({phoneNumber || 'حسابك'}) الآن</span>
-                      </>
-                    )}
+                    <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                    <span>تأكيد وتفعيل وضع المحاكاة والبيئة التجريبية الآن ⚡</span>
                   </button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: ANTI-BAN GUIDANCE */}
+          {/* TAB 2: WHATSAPP-WEB.JS & ANTI-BAN GUIDANCE */}
           {activeTab === 'guide' && (
-            <div className="space-y-4 text-xs">
-              
-              <div className="bg-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl flex items-start gap-3">
-                <ShieldCheck className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-emerald-300 text-sm">ميزة الجهاز المصاحب الرسمية (Multi-Device Protocol)</h4>
-                  <p className="text-zinc-300 mt-1 leading-relaxed">
-                    يعتمد هذا النظام على بروتوكول واتساب الرسمي المعتمد للأجهزة المرتبطة. هذا يعني أن ربط حسابك يستمر بالعمل حتى لو كان جوالك مغلقاً أو غير متصل بالإنترنت، ودون حذف أو التأثير على محادثاتك.
-                  </p>
-                </div>
+            <div className="space-y-4 text-xs text-right">
+              <div className="bg-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl space-y-2">
+                <p className="font-bold text-emerald-300 flex items-center gap-1.5 text-sm">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <span>آلية عمل مكتبة whatsapp-web.js السحابية:</span>
+                </p>
+                <p className="text-zinc-300 leading-relaxed font-medium">
+                  يعمل النظام مباشرة باستخدام **مكتبة whatsapp-web.js** مع محرك Puppeteer لتشغيل جلسة خفيفة وحفظ التوثيق عبر LocalAuth تلقائياً على السيرفر.
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 space-y-2">
-                  <h5 className="font-bold text-amber-400 flex items-center gap-1.5">
-                    <AlertTriangle className="w-4 h-4" />
-                    قواعد منع حظر الرقم:
-                  </h5>
-                  <ul className="space-y-1.5 text-zinc-300 list-disc list-inside leading-relaxed">
-                    <li>تجنب إرسال مئات الرسائل دفعة واحدة لأرقام لم تراسلك من قبل.</li>
-                    <li>استخدم **الفاصل الزمني التلقائي** (مثلاً 5-10 ثوانٍ) بين كل رسالة.</li>
-                    <li>فعّل **وضع سلام الذكي (salam)** للحفاظ على طبيعية النشر في المجموعات.</li>
-                  </ul>
-                </div>
-
-                <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 space-y-2">
-                  <h5 className="font-bold text-cyan-400 flex items-center gap-1.5">
-                    <Lock className="w-4 h-4" />
-                    الحماية والتشفير:
-                  </h5>
-                  <ul className="space-y-1.5 text-zinc-300 list-disc list-inside leading-relaxed">
-                    <li>جميع البيانات مشفرة بين طرفين (End-to-End Encrypted).</li>
-                    <li>يمكنك إلغاء ربط الجهاز في أي لحظة مباشرة من جوالك من قائمة الأجهزة المرتبطة.</li>
-                    <li>لا يستطيع أي طرف ثالث الاطلاع على محادثاتك الشخصية.</li>
-                  </ul>
-                </div>
+              <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 space-y-2">
+                <p className="font-bold text-amber-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>توصيات منع الحظر وتأمين حسابات الواتساب:</span>
+                </p>
+                <ul className="list-disc list-inside space-y-2 pr-1 text-zinc-300 leading-relaxed font-medium">
+                  <li>استخدم فواصل زمنية عشوائية بين الرسائل (مثل 3 إلى 8 ثوانٍ).</li>
+                  <li>تجنب إرسال نفس نص الرسالة لعدد كبير جداً من الأرقام في دقيقة واحدة.</li>
+                  <li>فعّل ميزة "المحيّن المتغير" (Spintax) لتغيير صياغة الكلمات بين كل رسالة وأخرى.</li>
+                  <li>ابدأ الإرسال بأعداد تدريجية للأرقام الجديدة (20-50 رسالة يومياً) ثم ارفع المعدل.</li>
+                </ul>
               </div>
-
             </div>
           )}
 
