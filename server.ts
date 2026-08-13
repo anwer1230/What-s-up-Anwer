@@ -232,13 +232,14 @@ const io = new SocketIOServer(server, {
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 // Real-time WhatsApp Server Connection State
-let whatsappConnectionStatus: 'connected' | 'disconnected' | 'connecting' = 'connected';
+let whatsappConnectionStatus: 'connected' | 'disconnected' | 'connecting' = 'disconnected';
 let whatsappDeviceInfo = {
-  phone: '+966 50 *** **67',
+  phone: '',
   platform: 'Linux Companion / Multi-Device 2.0',
-  connected_at: new Date().toISOString()
+  connected_at: ''
 };
 
 // Socket.io Real-time Connection Listener & Event Handlers
@@ -260,12 +261,17 @@ io.on('connection', (socket) => {
 
   socket.on('toggle_whatsapp_connection', (data) => {
     let targetStatus: 'connected' | 'disconnected' | 'connecting' = data?.status;
+    let customPhone = data?.phone;
+
     if (!targetStatus) {
       targetStatus = whatsappConnectionStatus === 'connected' ? 'disconnected' : 'connecting';
     }
 
     if (targetStatus === 'connecting') {
       whatsappConnectionStatus = 'connecting';
+      if (customPhone) {
+        whatsappDeviceInfo.phone = customPhone;
+      }
       io.emit('whatsapp_status_update', {
         status: 'connecting',
         device_info: whatsappDeviceInfo,
@@ -276,6 +282,9 @@ io.on('connection', (socket) => {
 
       setTimeout(() => {
         whatsappConnectionStatus = 'connected';
+        if (!whatsappDeviceInfo.phone) {
+          whatsappDeviceInfo.phone = customPhone || '+966 5x xxx xxxx';
+        }
         whatsappDeviceInfo.connected_at = new Date().toISOString();
         io.emit('whatsapp_status_update', {
           status: 'connected',
@@ -283,19 +292,33 @@ io.on('connection', (socket) => {
           timestamp: new Date().toISOString(),
           message: '✅ تم الاتصال بنجاح بخوادم واتساب كجهاز مصاحب'
         });
-        io.emit('log_update', { message: '✅ [واتساب] تم الربط والاتصال كجهاز مصاحب بنجاح!', type: 'success' });
+        io.emit('log_update', { message: `✅ [واتساب] تم الربط والاتصال بالحساب (${whatsappDeviceInfo.phone}) كجهاز مصاحب بنجاح!`, type: 'success' });
       }, 2500);
+    } else if (targetStatus === 'disconnected') {
+      whatsappConnectionStatus = 'disconnected';
+      whatsappDeviceInfo.phone = '';
+      whatsappDeviceInfo.connected_at = '';
+      io.emit('whatsapp_status_update', {
+        status: 'disconnected',
+        device_info: whatsappDeviceInfo,
+        timestamp: new Date().toISOString(),
+        message: '⚠️ تم فصل الاتصال عن واتساب'
+      });
+      io.emit('log_update', {
+        message: '⚠️ [واتساب] تم فصل الاتصال عن خوادم واتساب',
+        type: 'warning'
+      });
     } else {
       whatsappConnectionStatus = targetStatus;
+      if (targetStatus === 'connected') {
+        if (customPhone) whatsappDeviceInfo.phone = customPhone;
+        whatsappDeviceInfo.connected_at = new Date().toISOString();
+      }
       io.emit('whatsapp_status_update', {
         status: targetStatus,
         device_info: whatsappDeviceInfo,
         timestamp: new Date().toISOString(),
         message: targetStatus === 'connected' ? '✅ الحساب متصل' : '⚠️ تم فصل الاتصال عن واتساب'
-      });
-      io.emit('log_update', {
-        message: targetStatus === 'connected' ? '✅ [واتساب] الحساب متصل' : '⚠️ [واتساب] تم فصل الاتصال عن خوادم واتساب',
-        type: targetStatus === 'connected' ? 'success' : 'warning'
       });
     }
   });

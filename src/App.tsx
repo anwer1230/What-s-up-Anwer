@@ -12,6 +12,7 @@ import { LearningTab } from './components/tabs/LearningTab';
 import { AcademicTab } from './components/tabs/AcademicTab';
 import { DocFormatterTab } from './components/tabs/DocFormatterTab';
 import { ConnectWhatsAppModal } from './components/ConnectWhatsAppModal';
+import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { LiveLogs } from './components/LiveLogs';
 import {
@@ -29,6 +30,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<TabType>('send_monitor');
   const [monitoringActive, setMonitoringActive] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+  const [isPwaGuideOpen, setIsPwaGuideOpen] = useState(false);
   const [whatsappStatus, setWhatsappStatus] = useState<'connected' | 'disconnected' | 'connecting'>('connected');
   const [whatsappDeviceInfo, setWhatsappDeviceInfo] = useState<any>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -226,14 +228,14 @@ export function App() {
     }
   };
 
-  const handleToggleWhatsAppStatus = (targetStatus?: 'connected' | 'disconnected' | 'connecting') => {
+  const handleToggleWhatsAppStatus = (targetStatus?: 'connected' | 'disconnected' | 'connecting', phone?: string) => {
     if (socketRef.current) {
-      socketRef.current.emit('toggle_whatsapp_connection', { status: targetStatus });
+      socketRef.current.emit('toggle_whatsapp_connection', { status: targetStatus, phone });
     } else {
       safeFetchJson('/api/whatsapp/toggle_status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: targetStatus })
+        body: JSON.stringify({ status: targetStatus, phone })
       });
     }
   };
@@ -528,6 +530,12 @@ export function App() {
       {/* Toast Notifications Overlay */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
+      {/* PWA Floating Install Notification Banner */}
+      <PwaInstallBanner 
+        externalOpenGuide={isPwaGuideOpen} 
+        onCloseGuide={() => setIsPwaGuideOpen(false)} 
+      />
+
       {/* Background radial gradient accent */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.08),rgba(255,255,255,0))] pointer-events-none z-0"></div>
       <div className="relative z-10">
@@ -540,6 +548,7 @@ export function App() {
         onStopMonitoring={handleStopMonitoring}
         onRefresh={fetchAllData}
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
+        onOpenPwaGuide={() => setIsPwaGuideOpen(true)}
       />
 
       {/* Connect WhatsApp Companion Device Modal */}

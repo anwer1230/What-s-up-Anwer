@@ -1,0 +1,53 @@
+{
+  "id": "/",
+  "short_name": "أتمتة واتساب",
+  "name": "منصة أتمتة وإدارة واتساب المتقدمة",
+  "description": "منصة شاملة لإدارة وأتمتة محادثات ومجموعات واتساب، الردود التلقائية، الإرسال المتسلسل، والتعلم الذكي.",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "background_color": "#09090b",
+  "theme_color": "#10b981",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1614680376593-902f749f7cfc?w=192&auto=format&fit=crop&q=80",
+      "type": "image/jpeg",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1614680376593-902f749f7cfc?w=512&auto=format&fit=crop&q=80",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["utilities", "productivity", "business"],
+  "shortcuts": [
+    {
+      "name": "الإرسال والمراقبة",
+      "short_name": "الإرسال",
+      "description": "الانتقال المباشر للوحة الإرسال والمراقبة",
+      "url": "/?tab=send_monitor",
+      "icons": [{ "src": "/icon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "الردود التلقائية",
+      "short_name": "الردود",
+      "description": "إدارة الردود والكلمات المفتاحية",
+      "url": "/?tab=auto_responses",
+      "icons": [{ "src": "/icon.svg", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

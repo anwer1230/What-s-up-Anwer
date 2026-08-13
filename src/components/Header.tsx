@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Play, Square, RefreshCw, Smartphone, ShieldCheck, Zap } from 'lucide-react';
+import { MessageSquare, Play, Square, RefreshCw, Smartphone, ShieldCheck, Zap, Download } from 'lucide-react';
 
 interface HeaderProps {
   monitoringActive: boolean;
@@ -9,6 +9,7 @@ interface HeaderProps {
   onStopMonitoring: () => void;
   onRefresh: () => void;
   onOpenConnectModal?: () => void;
+  onOpenPwaGuide?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,7 +19,8 @@ export const Header: React.FC<HeaderProps> = ({
   onStartMonitoring,
   onStopMonitoring,
   onRefresh,
-  onOpenConnectModal
+  onOpenConnectModal,
+  onOpenPwaGuide
 }) => {
   return (
     <header className="bg-zinc-900/90 border-b border-zinc-800/90 shadow-2xl backdrop-blur-xl relative z-30">
@@ -100,8 +102,19 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
             <button
+              onClick={onOpenPwaGuide}
+              className="flex items-center gap-1.5 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 font-bold rounded-xl transition-all border border-emerald-500/30 text-xs shadow-sm cursor-pointer"
+              title="تثبيت التطبيق على الجوال كـ PWA"
+            >
+              <Download className="w-4 h-4 text-emerald-400" />
+              <span className="hidden lg:inline">تثبيت التطبيق</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                PWA
+              </span>
+            </button>
+            <button
               onClick={onOpenConnectModal}
-              className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-bold rounded-xl transition-all border border-emerald-500/20 text-xs shadow-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-bold rounded-xl transition-all border border-emerald-500/20 text-xs shadow-sm cursor-pointer"
               title="ربط واتساب كجهاز مصاحب"
             >
               <Smartphone className="w-4 h-4" />

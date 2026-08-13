@@ -22,7 +22,7 @@ interface ConnectWhatsAppModalProps {
   isOpen: boolean;
   onClose: () => void;
   status?: 'connected' | 'disconnected' | 'connecting';
-  onToggleStatus: (targetStatus?: 'connected' | 'disconnected' | 'connecting') => void;
+  onToggleStatus: (targetStatus?: 'connected' | 'disconnected' | 'connecting', phone?: string) => void;
 }
 
 export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
@@ -376,11 +376,31 @@ export const ConnectWhatsAppModal: React.FC<ConnectWhatsAppModalProps> = ({
                 </div>
               </div>
 
-              <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed space-y-1">
+              <div className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 text-xs text-zinc-300 leading-relaxed space-y-2">
                 <p className="font-bold text-emerald-400">طريقة إدخال الرمز في واتساب:</p>
                 <p>1. افتح واتساب ← **الأجهزة المرتبطة** ← **ربط جهاز**.</p>
                 <p>2. اختر **الربط باستخدام رقم الهاتف بدلاً من ذلك** بالأسفل.</p>
                 <p>3. أدخل الرمز الظاهر أعلاه لتأكيد الربط.</p>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => onToggleStatus('connecting', phoneNumber ? (phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`) : undefined)}
+                    disabled={status === 'connecting'}
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {status === 'connecting' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>جاري المزامنة والربط...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Smartphone className="w-4 h-4" />
+                        <span>تأكيد إدخال الرمز وربط الرقم ({phoneNumber || 'حسابك'}) الآن</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           )}
