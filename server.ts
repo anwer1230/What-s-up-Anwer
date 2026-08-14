@@ -27,6 +27,80 @@ const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const TELEGRAM_SESSION_FILE = path.join(DATA_DIR, 'telegram_session.json');
 const ACCOUNTS_FILE = path.join(DATA_DIR, 'telegram_accounts.json');
 const LIVE_MONITOR_FILE = path.join(DATA_DIR, 'live_monitor.json');
+const WELCOME_HISTORY_FILE = path.join(DATA_DIR, 'welcomed_users.json');
+
+// Welcomed User Record for Tracking & Anti-Spam
+export interface WelcomedUserRecord {
+  id: string;
+  account_id: string;
+  user_id: string;
+  user_name?: string;
+  phone?: string;
+  trigger_type: 'open_chat' | 'incoming_message';
+  timestamp: string;
+  message_sent: string;
+  status: 'sent' | 'failed';
+}
+
+function loadWelcomeHistory(): WelcomedUserRecord[] {
+  if (fs.existsSync(WELCOME_HISTORY_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(WELCOME_HISTORY_FILE, 'utf-8'));
+      if (Array.isArray(data.history)) return data.history;
+      if (Array.isArray(data)) return data;
+    } catch (e) {}
+  }
+  const defaultHistory: WelcomedUserRecord[] = [
+    {
+      id: 'welc_1',
+      account_id: 'acc_1',
+      user_id: 'user_saudi_782',
+      user_name: 'سلطان القحطاني',
+      phone: '+966 54 112 3344',
+      trigger_type: 'open_chat',
+      timestamp: new Date(Date.now() - 3600000).toLocaleString('ar-SA'),
+      message_sent: 'مرحباً بك عزيزي في مركز سرعة إنجاز للخدمات الأكاديمية 🌹 كيف يمكننا مساعدتك اليوم؟',
+      status: 'sent'
+    },
+    {
+      id: 'welc_2',
+      account_id: 'acc_1',
+      user_id: 'user_academic_901',
+      user_name: 'أمل العتيبي',
+      phone: '+966 50 998 7766',
+      trigger_type: 'incoming_message',
+      timestamp: new Date(Date.now() - 1800000).toLocaleString('ar-SA'),
+      message_sent: 'مرحباً بك عزيزي في مركز سرعة إنجاز للخدمات الأكاديمية 🌹 كيف يمكننا مساعدتك اليوم؟',
+      status: 'sent'
+    }
+  ];
+  try {
+    fs.writeFileSync(WELCOME_HISTORY_FILE, JSON.stringify({ history: defaultHistory }, null, 2), 'utf-8');
+  } catch (e) {}
+  return defaultHistory;
+}
+
+function saveWelcomeHistory(history: WelcomedUserRecord[]) {
+  try {
+    fs.writeFileSync(WELCOME_HISTORY_FILE, JSON.stringify({ history }, null, 2), 'utf-8');
+  } catch (e) {
+    console.error('Failed saving welcome history:', e);
+  }
+}
+
+// Check cooldown for welcome message
+function canSendWelcome(accountId: string, userId: string, cooldownHours: number = 24): boolean {
+  if (cooldownHours <= 0) return true; // Always send or handled
+  const history = loadWelcomeHistory();
+  const recent = history.find((h) => h.account_id === accountId && h.user_id === userId);
+  if (!recent) return true;
+
+  const lastTime = new Date(recent.timestamp).getTime();
+  if (isNaN(lastTime)) return true;
+
+  const hoursDiff = (Date.now() - lastTime) / (1000 * 60 * 60);
+  return hoursDiff >= cooldownHours;
+}
 
 // Live Monitor State for Real-Time Telegram Link Capture & Auto Join / WhatsApp Save
 export interface LiveCapturedLinkRecord {

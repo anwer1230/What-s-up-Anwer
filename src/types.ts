@@ -18,6 +18,29 @@ export interface TelegramSettings {
   rotating_messages?: string[];
   rotating_groups?: string[];
   rotating_interval?: number;
+  welcome_message?: WelcomeMessageSettings;
+}
+
+export interface WelcomeMessageSettings {
+  enabled: boolean;
+  message: string;
+  trigger_on_open_chat: boolean;
+  trigger_on_first_message: boolean;
+  trigger_on_any_message: boolean;
+  cooldown_hours: number;
+  simulate_typing: boolean;
+  delay_seconds: number;
+}
+
+export interface WelcomedUserRecord {
+  id: string;
+  user_id: string;
+  user_name?: string;
+  phone?: string;
+  trigger_type: 'open_chat' | 'incoming_message';
+  timestamp: string;
+  message_sent: string;
+  status: 'sent' | 'failed';
 }
 
 export type WhatsAppSettings = TelegramSettings;
