@@ -42,9 +42,9 @@ export const BatchesTab: React.FC<BatchesTabProps> = ({
             <Mail className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-white">📨 رسائلي — سجل الدفعات المرسلة عبر واتساب</h2>
+            <h2 className="text-lg font-black text-white">📨 رسائلي — سجل الدفعات المرسلة عبر تليجرام</h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              استعرض جميع الدفعات المرسلة مع إمكانية التعديل الجماعي الفوري أو الاسترداد والحذف التلقائي من المحادثات.
+              استعرض جميع الدفعات المرسلة مع إمكانية التعديل الجماعي الفوري أو الاسترداد والحذف التلقائي من القنوات والمحادثات.
             </p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export const BatchesTab: React.FC<BatchesTabProps> = ({
                         <button
                           onClick={() => openEditModal(batch)}
                           className="flex items-center gap-1 px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white rounded-lg border border-blue-500/30 transition-all font-bold text-[11px]"
-                          title="تعديل الرسالة في واتساب"
+                          title="تعديل الرسالة في تليجرام"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                           تعديل
@@ -149,7 +149,7 @@ export const BatchesTab: React.FC<BatchesTabProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h3 className="font-black text-slate-100 flex items-center gap-2">
                 <Edit3 className="w-5 h-5 text-blue-400" />
-                تعديل الدفعة #{selectedBatch.id.slice(-8)} في محادثات واتساب
+                تعديل الدفعة #{selectedBatch.id.slice(-8)} في محادثات تليجرام
               </h3>
               <button
                 onClick={() => setIsEditing(false)}
@@ -180,7 +180,7 @@ export const BatchesTab: React.FC<BatchesTabProps> = ({
                 onClick={handleSaveEdit}
                 className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black text-xs shadow-lg shadow-blue-900/40"
               >
-                حفظ والتحديث في واتساب 🚀
+                حفظ والتحديث في تليجرام 🚀
               </button>
             </div>
           </div>

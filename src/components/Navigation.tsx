@@ -8,12 +8,17 @@ import {
   Repeat,
   Brain,
   BarChart3,
-  FileText
+  FileText,
+  Compass,
+  Search,
+  Users2
 } from 'lucide-react';
 
 export type TabType =
   | 'send_monitor'
   | 'batches'
+  | 'accounts'
+  | 'link_scraper'
   | 'autojoin'
   | 'links'
   | 'autoreply'
@@ -25,12 +30,15 @@ export type TabType =
 interface NavigationProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
+  isLoggedIn?: boolean;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
-  const navItems: { id: TabType; label: string; icon: React.ReactNode; badge?: string }[] = [
+export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab, isLoggedIn = false }) => {
+  const allNavItems: { id: TabType; label: string; icon: React.ReactNode; badge?: string; requiresLogin?: boolean }[] = [
+    { id: 'accounts', label: 'إدارة الحسابات', icon: <Users2 className="w-4 h-4 text-emerald-400" />, badge: 'متعدد', requiresLogin: true },
     { id: 'send_monitor', label: 'المراقبة والإرسال', icon: <Send className="w-4 h-4" /> },
     { id: 'batches', label: 'رسائلي', icon: <Mail className="w-4 h-4" /> },
+    { id: 'link_scraper', label: 'استخراج وفحص الروابط', icon: <Search className="w-4 h-4 text-sky-400" />, badge: 'جديد 🔍' },
     { id: 'autojoin', label: 'الانضمام التلقائي', icon: <Zap className="w-4 h-4" />, badge: 'سريع' },
     { id: 'links', label: 'روابطي المحفوظة', icon: <Bookmark className="w-4 h-4" /> },
     { id: 'autoreply', label: 'الرد التلقائي', icon: <Bot className="w-4 h-4" /> },
@@ -39,6 +47,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab 
     { id: 'academic', label: 'التحليل الأكاديمي', icon: <BarChart3 className="w-4 h-4" /> },
     { id: 'formatter', label: 'منسق المستندات', icon: <FileText className="w-4 h-4" /> }
   ];
+
+  const navItems = allNavItems.filter((item) => !item.requiresLogin || isLoggedIn);
 
   return (
     <nav className="bg-zinc-900/90 border-b border-zinc-800/80 sticky top-0 z-40 backdrop-blur-xl shadow-xl">

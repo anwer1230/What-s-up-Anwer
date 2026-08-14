@@ -22,7 +22,7 @@ export const AutoJoinTab: React.FC<AutoJoinTabProps> = ({
   progressEvent
 }) => {
   const [linksText, setLinksText] = useState(
-    `https://chat.whatsapp.com/G1234567890abcdef1\nhttps://chat.whatsapp.com/H9876543210fedcba2\nhttps://chat.whatsapp.com/K11223344556677889\n+966500000003`
+    `https://t.me/academic_services_group\nhttps://t.me/university_students_ksa\nhttps://t.me/+AbCdEfGhIjKlMnOp\n@academic_researches_sa\n@graduation_projects_help`
   );
   const [delay, setDelay] = useState(3);
   const [maxRetries, setMaxRetries] = useState(3);
@@ -60,14 +60,14 @@ export const AutoJoinTab: React.FC<AutoJoinTabProps> = ({
     <div className="space-y-6">
       
       {/* Top Banner Notice */}
-      <div className="bg-rose-950/50 border border-rose-500/30 rounded-2xl p-5 shadow-xl flex items-start gap-4">
-        <div className="p-3 bg-rose-500/20 rounded-2xl text-rose-400 shrink-0 border border-rose-500/30">
+      <div className="bg-sky-950/50 border border-sky-500/30 rounded-2xl p-5 shadow-xl flex items-start gap-4">
+        <div className="p-3 bg-sky-500/20 rounded-2xl text-sky-400 shrink-0 border border-sky-500/30">
           <Zap className="w-7 h-7" />
         </div>
         <div>
-          <h2 className="text-lg font-black text-white">⚡ الانضمام التلقائي المتقدم لمجموعات واتساب</h2>
+          <h2 className="text-lg font-black text-white">⚡ الانضمام التلقائي المتقدم لقنوات ومجموعات تليجرام</h2>
           <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-            ضع قائمة الروابط الإلكرونية لمجموعات واتساب (`chat.whatsapp.com`) أو أرقام المستهدفين أو نصوص تحتوي على روابط صفحية. سينضم البوت تلقائياً مع تجاوز الفحوصات العائلية والمجموعات المكررة.
+            ضع قائمة الروابط الإلكترونية لمجموعات وقنوات تليجرام (`t.me` أو `telegram.me`) أو معرفات `@username`. سينضم البوت تلقائياً عبر بروتوكول MTProto مع تجاوز المجموعات المكررة.
           </p>
         </div>
       </div>
@@ -79,14 +79,14 @@ export const AutoJoinTab: React.FC<AutoJoinTabProps> = ({
           
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
             <label className="block text-sm font-bold text-slate-200">
-              📋 روابط المجموعات والنصوص (سطر لكل رابط)
+              📋 روابط ومعرفات القنوات والمجموعات (سطر لكل رابط/معرف)
             </label>
             <textarea
               rows={8}
               value={linksText}
               onChange={(e) => setLinksText(e.target.value)}
-              placeholder={`https://chat.whatsapp.com/xxx\nhttps://wa.me/966500000000\nأو الصق مقالاً يحتوي روابط مجموعات...`}
-              className="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-4 text-xs font-mono text-slate-100 focus:outline-none focus:border-rose-500 leading-relaxed"
+              placeholder={`https://t.me/group_name\n@channel_username\nhttps://t.me/+join_hash\nأو الصق مقالاً يحتوي على معرفات تليجرام...`}
+              className="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-4 text-xs font-mono text-slate-100 focus:outline-none focus:border-sky-500 leading-relaxed"
             />
           </div>
 

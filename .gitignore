@@ -1,8 +1,26 @@
-node_modules/
-build/
-dist/
-coverage/
+node_modules
+dist
 .DS_Store
-*.log
-.env*
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# Runtime state and authentication material
+sessions/
+data/*.db
+data/*_session*
+data/user_sessions.json
+data/learning_memory/
+*.session
+*.session-journal
+*_string.txt
+telegram_monitoring.log
+
+# Local environment files (keep only the safe example tracked)
+.env
+.env.*
 !.env.example
+
+# Local uploads and pasted snippets may contain user data or credentials
+attached_assets/Pasted-*
+.local/state/

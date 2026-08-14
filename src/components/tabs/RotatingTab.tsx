@@ -85,9 +85,9 @@ export const RotatingTab: React.FC<RotatingTabProps> = ({
             <Repeat className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-white">🔄 النشر الدوري المتسلسل عبر واتساب</h2>
+            <h2 className="text-lg font-black text-white">🔄 النشر الدوري المتسلسل عبر تليجرام</h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              أرسل حتى 5 رسائل بالتناوب (Round-Robin) إلى مجموعات محددة كل عدة دقائق أو ثواني لضمان التنويع ومنع كشف الحظر.
+              أرسل حتى 5 رسائل بالتناوب (Round-Robin) إلى قنوات ومجموعات محددة كل عدة دقائق لضمان التنويع ومنع كشف التكرار.
             </p>
           </div>
         </div>
@@ -131,13 +131,13 @@ export const RotatingTab: React.FC<RotatingTabProps> = ({
 
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
             <label className="block text-sm font-bold text-slate-200">
-              👥 مجموعات وأرقام واتساب المستهدفة بالنشر الدوري
+              👥 قنوات ومجموعات ومعرفات تليجرام المستهدفة بالنشر الدوري
             </label>
             <textarea
               rows={4}
               value={groups}
               onChange={(e) => setGroups(e.target.value)}
-              placeholder={`https://chat.whatsapp.com/G1234567890abcdef1\n966500000001@s.whatsapp.net`}
+              placeholder={`https://t.me/academic_services_group\n@academic_researches_sa\nhttps://t.me/+join_hash`}
               className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-100 leading-relaxed"
             />
           </div>

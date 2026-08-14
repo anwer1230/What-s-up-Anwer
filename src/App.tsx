@@ -4,6 +4,8 @@ import { Header } from './components/Header';
 import { Navigation, TabType } from './components/Navigation';
 import { SendMonitorTab } from './components/tabs/SendMonitorTab';
 import { BatchesTab } from './components/tabs/BatchesTab';
+import { AccountsManagerTab } from './components/tabs/AccountsManagerTab';
+import { LinkScraperTab } from './components/tabs/LinkScraperTab';
 import { AutoJoinTab } from './components/tabs/AutoJoinTab';
 import { SavedLinksTab } from './components/tabs/SavedLinksTab';
 import { AutoReplyTab } from './components/tabs/AutoReplyTab';
@@ -117,8 +119,8 @@ export function App() {
           if (curr === 'disconnected') {
             addToast({
               type: 'error',
-              title: '🚨 انقطاع مفاجئ لاتصال واتساب!',
-              message: 'تم فقدان الاتصال بخادم واتساب فجأة. يرجى إعادة الإقران فوراً لضمان استمرارية الإرسال المجدول والرد التلقائي.',
+              title: '🚨 انقطاع مفاجئ لاتصال تليجرام!',
+              message: 'تم فقدان الاتصال بخادم تليجرام. يرجى إعادة تسجيل الدخول برقم الهاتف والكود فوراً لضمان استمرارية الإرسال والرد التلقائي.',
               actionText: 'إعادة الربط الآن',
               onAction: () => {
                 setIsConnectModalOpen(true);
@@ -130,14 +132,14 @@ export function App() {
           } else if (curr === 'connected') {
             addToast({
               type: 'success',
-              title: '✅ تم استعادة الاتصال بواتساب',
-              message: 'حسابك الآن متصل كجهاز مصاحب بنجاح وكل الخدمات المجدولة تعمل كالمعتاد.'
+              title: '✅ تم استعادة الاتصال بتليجرام',
+              message: 'حسابك في Telegram متصل الآن بنجاح وكل الخدمات المجدولة تعمل كالمعتاد.'
             });
           } else if (curr === 'connecting') {
             addToast({
               type: 'warning',
               title: '🔄 جاري الاتصال والمزامنة...',
-              message: 'يتم الآن إعادة الإقران المباشر مع خوادم واتساب.'
+              message: 'يتم الآن إعادة الاتصال المباشر مع خوادم تليجرام (MTProto).'
             });
           }
         }
@@ -154,6 +156,22 @@ export function App() {
 
     socket.on('autojoin_progress', (event: AutoJoinProgressEvent) => {
       setAutoJoinProgress(event);
+    });
+
+    socket.on('account_switched', (data: any) => {
+      if (data?.settings) setSettings(data.settings);
+      if (data?.batches) setSentBatches(data.batches);
+      if (data?.stats) setStats(data.stats);
+      if (data?.rotating_status) {
+        setRotatingStatus({
+          active: !!data.rotating_status.active,
+          messages: data.rotating_status.messages || [],
+          groups: data.rotating_status.groups || [],
+          interval: data.rotating_status.interval || 5,
+          next_send_in: data.rotating_status.next_send_in || 0
+        });
+      }
+      fetchAllData();
     });
 
     return () => {
@@ -560,7 +578,11 @@ export function App() {
       />
 
       {/* Main Tab Navigation Bar */}
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navigation
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        isLoggedIn={whatsappStatus === 'connected'}
+      />
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -583,6 +605,44 @@ export function App() {
             onEditBatch={handleEditBatch}
             onDeleteBatch={handleDeleteBatch}
             onRefresh={fetchAllData}
+          />
+        )}
+
+        {activeTab === 'accounts' && (
+          <AccountsManagerTab
+            onAccountSwitched={(acc) => {
+              setWhatsappDeviceInfo({
+                phone: acc.phone,
+                username: acc.username,
+                first_name: acc.first_name,
+                connected_at: acc.last_sync
+              });
+              setWhatsappStatus(acc.status === 'connected' ? 'connected' : 'disconnected');
+            }}
+          />
+        )}
+
+        {activeTab === 'link_scraper' && (
+          <LinkScraperTab
+            onSendToAutoJoin={(urls) => {
+              setActiveTab('autojoin');
+              handleStartAutoJoin({
+                links: urls.join('\n'),
+                delay: 3,
+                max_retries: 3,
+                fetch_external: true,
+                search_by_name: true
+              });
+            }}
+            onSaveToSavedLinks={(link) => {
+              handleAddLink({
+                url: link.url,
+                title: link.title,
+                category: link.category || 'عام',
+                notes: `تم استخراجه من محادثات تليجرام (${link.source || ''})`
+              });
+            }}
+            onNavigateTab={(tab) => setActiveTab(tab as TabType)}
           />
         )}
 
@@ -642,8 +702,10 @@ export function App() {
           <DocFormatterTab onExportDoc={handleExportDoc} />
         )}
 
-        {/* Live Terminal & Logs Feed */}
-        <LiveLogs logs={logs} onClearLogs={() => setLogs([])} />
+        {/* Live Terminal & Logs Feed (hidden on Accounts tab as requested) */}
+        {activeTab !== 'accounts' && (
+          <LiveLogs logs={logs} onClearLogs={() => setLogs([])} />
+        )}
 
       </main>
 

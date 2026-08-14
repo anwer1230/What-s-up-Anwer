@@ -79,9 +79,9 @@ export const SavedLinksTab: React.FC<SavedLinksTabProps> = ({
             <Bookmark className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-white">🔖 روابطي المحفوظة — أرشيف مجموعات وقنوات واتساب</h2>
+            <h2 className="text-lg font-black text-white">🔖 روابطي المحفوظة — أرشيف قنوات ومجموعات تليجرام</h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              احفظ ونسّق روابط مجموعات واتساب الهامة مع أزرار التصدير والنسخ المباشر ونقل الروابط فوراً لتبويب الانضمام.
+              احفظ ونسّق روابط وقنوات تليجرام الهامة مع أزرار التصدير والنسخ المباشر ونقل الروابط فوراً لتبويب الانضمام.
             </p>
           </div>
         </div>
@@ -115,13 +115,13 @@ export const SavedLinksTab: React.FC<SavedLinksTabProps> = ({
 
           <form onSubmit={handleAddSubmit} className="space-y-3">
             <div>
-              <label className="text-xs font-semibold text-slate-300 block mb-1">الرابط (URL) *</label>
+              <label className="text-xs font-semibold text-slate-300 block mb-1">الرابط أو المعرف (URL/@) *</label>
               <input
                 type="text"
                 required
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
-                placeholder="https://chat.whatsapp.com/..."
+                placeholder="https://t.me/academic_group أو @channel_name"
                 className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-100"
               />
             </div>

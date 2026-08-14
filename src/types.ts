@@ -1,7 +1,7 @@
 export type SanitizeMode = 'salam' | 'skip' | 'smart' | 'always' | 'off';
 export type SendType = 'manual' | 'scheduled';
 
-export interface WhatsAppSettings {
+export interface TelegramSettings {
   message: string;
   groups: string[];
   watch_words: string[];
@@ -19,6 +19,8 @@ export interface WhatsAppSettings {
   rotating_groups?: string[];
   rotating_interval?: number;
 }
+
+export type WhatsAppSettings = TelegramSettings;
 
 export interface BatchEntry {
   group: string;
@@ -131,4 +133,103 @@ export interface LogUpdate {
   message: string;
   timestamp?: string;
   type?: 'info' | 'success' | 'error' | 'warning';
+}
+
+export interface AccountProxyConfig {
+  enabled: boolean;
+  type: 'socks5' | 'http' | 'https';
+  host: string;
+  port: number;
+  username?: string;
+  password?: string;
+}
+
+export interface TelegramAccount {
+  id: string;
+  phone: string;
+  session_name: string;
+  session_string?: string;
+  api_id?: number;
+  api_hash?: string;
+  username?: string;
+  first_name?: string;
+  status: 'connected' | 'disconnected' | 'connecting' | '2fa_needed' | 'flood_wait' | 'error';
+  flood_wait_seconds?: number;
+  has_2fa: boolean;
+  proxy?: AccountProxyConfig;
+  is_active: boolean;
+  created_at: string;
+  last_sync: string;
+  stats: {
+    sent: number;
+    errors: number;
+    received: number;
+  };
+}
+
+export interface MultiAccountBroadcastResult {
+  account_id: string;
+  phone: string;
+  session_name: string;
+  status: 'success' | 'failed' | 'flood_wait';
+  message: string;
+  error?: string;
+  wait_seconds?: number;
+}
+
+export interface ScrapedLinkTypeWrapper {
+  id: string;
+}
+
+
+export type ScrapedLinkType = 'telegram' | 'whatsapp' | 'other';
+export type LinkVerifyStatus = 'valid' | 'invalid' | 'checking' | 'unverified';
+
+export interface ScrapedLinkItem {
+  id: string;
+  url: string;
+  type: ScrapedLinkType;
+  source_chat_id: string;
+  source_title: string;
+  source_type: 'group' | 'channel' | 'private' | 'unknown';
+  sender_name?: string;
+  timestamp: string;
+  message_snippet?: string;
+  status?: LinkVerifyStatus;
+  notes?: string;
+}
+
+export type ScrapeTimeRange = '24_hours' | '7_days' | '10_days' | '30_days' | 'all' | 'custom';
+
+export interface LinkScrapeProgressEvent {
+  scanned_chats: number;
+  total_chats: number;
+  current_chat_title: string;
+  found_total: number;
+  found_tg: number;
+  found_wa: number;
+  found_other: number;
+  status: 'idle' | 'running' | 'paused' | 'completed' | 'error';
+  new_link?: ScrapedLinkItem;
+}
+
+export interface LiveCapturedLinkItem {
+  id: string;
+  url: string;
+  type: 'telegram' | 'whatsapp' | 'other';
+  action_taken: 'joined_telegram' | 'saved_whatsapp' | 'saved_other' | 'failed';
+  source_chat_id?: string;
+  source_title: string;
+  sender_name: string;
+  timestamp: string;
+  status_text: string;
+  original_message?: string;
+}
+
+export interface LiveMonitorState {
+  is_active: boolean;
+  total_captured: number;
+  joined_telegram_count: number;
+  saved_whatsapp_count: number;
+  captured_links: LiveCapturedLinkItem[];
 }

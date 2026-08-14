@@ -60,9 +60,9 @@ export const LearningTab: React.FC<LearningTabProps> = ({
             <Brain className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-white">🧠 نظام التعلم والرد الذكي لواتساب (Gemini AI)</h2>
+            <h2 className="text-lg font-black text-white">🧠 نظام التعلم والرد الذكي لتليجرام (Gemini AI + Telegram)</h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              بوت خدمي ذكي يتعلم أسلوب الرد باللهجة الخليجية، يتعرف على الخدمات المطلوبة ويزود العملاء بالتفاصيل والردود البشرية.
+              بوت خدمي ذكي يتعلم أسلوب الرد باللهجة الخليجية، يتعرف على الخدمات المطلوبة ويزود عملاء وطلاب قنوات ومجموعات تليجرام بالتفاصيل والردود البشرية.
             </p>
           </div>
         </div>
@@ -73,7 +73,7 @@ export const LearningTab: React.FC<LearningTabProps> = ({
         
         <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
           <div>
-            <h4 className="text-xs font-bold text-slate-200">💬 المحادثات الخاصة (Private WhatsApp)</h4>
+            <h4 className="text-xs font-bold text-slate-200">💬 المحادثات الخاصة (Private Telegram)</h4>
             <span className="text-[10px] text-slate-400">تفعيل البوت للرد التلقائي على الرسائل الفردية</span>
           </div>
           <button
@@ -88,8 +88,8 @@ export const LearningTab: React.FC<LearningTabProps> = ({
 
         <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between">
           <div>
-            <h4 className="text-xs font-bold text-slate-200">👥 المجموعات (WhatsApp Groups)</h4>
-            <span className="text-[10px] text-slate-400">تفعيل البوت للرد التلقائي داخل جروبات واتساب</span>
+            <h4 className="text-xs font-bold text-slate-200">👥 المجموعات والقنوات (Telegram Groups & Channels)</h4>
+            <span className="text-[10px] text-slate-400">تفعيل البوت للرد التلقائي داخل قنوات ومجموعات تليجرام</span>
           </div>
           <button
             onClick={() => onToggleActive('group', !activeGroup)}
@@ -186,7 +186,7 @@ export const LearningTab: React.FC<LearningTabProps> = ({
             </h3>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-400">رسالة واصلة من عميل واتساب:</label>
+              <label className="text-xs font-bold text-slate-400">رسالة واصلة من عميل تليجرام:</label>
               <textarea
                 rows={3}
                 value={testMsg}

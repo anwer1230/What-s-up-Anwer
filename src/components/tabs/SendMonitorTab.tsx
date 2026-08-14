@@ -130,12 +130,12 @@ export const SendMonitorTab: React.FC<SendMonitorTabProps> = ({
     <div className="space-y-6">
       
       {/* Top Banner Notice */}
-      <div className="bg-emerald-950/40 border border-emerald-500/20 rounded-2xl p-4 flex items-start gap-3 shadow-lg backdrop-blur-md">
-        <ShieldCheck className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
+      <div className="bg-sky-950/40 border border-sky-500/20 rounded-2xl p-4 flex items-start gap-3 shadow-lg backdrop-blur-md">
+        <ShieldCheck className="w-6 h-6 text-sky-400 shrink-0 mt-0.5" />
         <div>
-          <h3 className="text-emerald-300 font-bold text-sm">نظام مراقبة وإرسال النشرات عبر واتساب</h3>
+          <h3 className="text-sky-300 font-bold text-sm">نظام مراقبة وإرسال النشرات عبر تليجرام (Telegram MTProto)</h3>
           <p className="text-zinc-300 text-xs mt-1 leading-relaxed">
-            قم بكتابة الرسالة، رفع الصور المرفقة، وتحديد روابط مجموعات أو أرقام واتساب. يمكنك الإرسال الفوري أو المجدول مع تفعيل الحماية الذكية لتجنب الحظر وتجاوز قيود النشر.
+            قم بكتابة الرسالة، رفع الصور المرفقة، وتحديد روابط قنوات ومجموعات أو معرفات تليجرام (@username أو t.me). يمكنك الإرسال الفوري أو المجدول مع تفعيل الحماية الذكية وتفادي القيود.
           </p>
         </div>
       </div>
@@ -407,20 +407,20 @@ export const SendMonitorTab: React.FC<SendMonitorTabProps> = ({
             )}
           </div>
 
-          {/* 2. Groups & WhatsApp Targets */}
+          {/* 2. Groups & Telegram Targets */}
           <div className="bg-zinc-900/80 border border-zinc-800/80 rounded-2xl p-5 shadow-2xl backdrop-blur-xl space-y-3">
             <div className="flex items-center justify-between">
               <label className="block text-sm font-bold text-zinc-200">
-                2️⃣ المجموعات وأرقام المستهدفين (groups)
+                2️⃣ القنوات والمجموعات المستهدفة (groups & channels)
               </label>
-              <label className="flex items-center gap-2 text-xs font-bold text-emerald-400 cursor-pointer">
+              <label className="flex items-center gap-2 text-xs font-bold text-sky-400 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={sendToAll}
                   onChange={(e) => setSendToAll(e.target.checked)}
-                  className="rounded border-zinc-800 text-emerald-500 focus:ring-emerald-500 bg-zinc-950"
+                  className="rounded border-zinc-800 text-sky-500 focus:ring-sky-500 bg-zinc-950"
                 />
-                الإرسال لجميع مجموعات وأرقام الحساب تلقائياً
+                الإرسال لجميع قنوات ومجموعات الحساب تلقائياً
               </label>
             </div>
             <textarea
@@ -428,8 +428,8 @@ export const SendMonitorTab: React.FC<SendMonitorTabProps> = ({
               disabled={sendToAll}
               value={groups}
               onChange={(e) => setGroups(e.target.value)}
-              placeholder={`ضع رابط أو رقم واتساب في كل سطر:\nhttps://chat.whatsapp.com/G1234567890abcdef1\n966500000001@s.whatsapp.net\n+966500000002`}
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500/80 transition-all font-mono text-xs leading-relaxed disabled:opacity-50"
+              placeholder={`ضع رابط قناة أو معرف تليجرام في كل سطر:\nhttps://t.me/academic_services_group\n@academic_researches_sa\nhttps://t.me/+AbCdEfGhIjKlMnOp\n@graduation_projects_help`}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3.5 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-sky-500/80 transition-all font-mono text-xs leading-relaxed disabled:opacity-50"
             />
           </div>
 

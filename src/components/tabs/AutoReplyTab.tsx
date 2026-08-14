@@ -45,9 +45,9 @@ export const AutoReplyTab: React.FC<AutoReplyTabProps> = ({
             <Bot className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-white">🤖 الردود التلقائية الذكية لواتساب</h2>
+            <h2 className="text-lg font-black text-white">🤖 الردود التلقائية الذكية لتليجرام</h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              قم بإنشاء قواعد رد تلقائي مخصصة بحسب الكلمة المفتاحية أو التعبير النمطي، وتخصيص نطاق الرد (المحادثات الفردية أو المجموعات).
+              قم بإنشاء قواعد رد تلقائي مخصصة بحسب الكلمة المفتاحية أو التعبير النمطي، وتخصيص نطاق الرد (المحادثات الفردية أو المجموعات والقنوات).
             </p>
           </div>
         </div>

@@ -136,7 +136,7 @@ export const PwaInstallBanner: React.FC<PwaInstallBannerProps> = ({
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="text-sm font-black text-zinc-100 flex items-center gap-1.5">
-                    <span>تثبيت تطبيق "أتمتة واتساب" على الجوال (PWA)</span>
+                    <span>تثبيت تطبيق "أتمتة تليجرام" على الجوال (PWA)</span>
                     <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   </h3>
                   {deferredPrompt ? (
@@ -310,7 +310,7 @@ export const PwaInstallBanner: React.FC<PwaInstallBannerProps> = ({
             <div>
               <h3 className="text-lg font-black text-zinc-100">تم تثبيت التطبيق بنجاح! 📱</h3>
               <p className="text-xs text-zinc-400 mt-1 font-medium">
-                تطبيق "أتمتة واتساب" موجود الآن في شاشة جوالك الرئيسية وجاهز للاستخدام في نافذة مستقلة كـ PWA.
+                تطبيق "أتمتة تليجرام" موجود الآن في شاشة جوالك الرئيسية وجاهز للاستخدام في نافذة مستقلة كـ PWA.
               </p>
             </div>
             <button
